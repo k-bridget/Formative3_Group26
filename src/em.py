@@ -108,3 +108,38 @@ def expectation_step(data, mu1, mu2, sigma1, sigma2, pi1, pi2):
 
     return r1, r2
 
+
+# M-step (updates the parameters of the Gaussian distributions based on responsibilities calculated in the E-step)
+
+
+def maximization_step(data, r1, r2):
+
+    mu1 = np.sum(r1 * data) / np.sum(r1)
+    mu2 = np.sum(r2 * data) / np.sum(r2)
+
+    sigma1 = np.sqrt(
+        np.sum(r1 * (data - mu1) ** 2) / np.sum(r1)
+    )
+
+    sigma2 = np.sqrt(
+        np.sum(r2 * (data - mu2) ** 2) / np.sum(r2)
+    )
+
+    pi1 = np.mean(r1)
+    pi2 = np.mean(r2)
+
+    return mu1, mu2, sigma1, sigma2, pi1, pi2
+
+#  log-likelihood 
+
+def log_likelihood(data, mu1, mu2, sigma1, sigma2, pi1, pi2):
+    
+    likelihood = (
+        pi1 * gaussian(data, mu1, sigma1)
+        +
+        pi2 * gaussian(data, mu2, sigma2)
+    )
+    
+    likelihood = np.clip(likelihood, 1e-12, None)
+
+    return np.sum(np.log(likelihood))
