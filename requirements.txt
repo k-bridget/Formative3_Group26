@@ -1,0 +1,15 @@
+# Requirements
+# Install with: pip install -r requirements.txt
+
+# Loading datasets
+pandas==3.0.2
+
+# Numerical computing
+numpy==2.5.0
+ 
+# derivative verification
+scipy==1.17.1
+ 
+# Plotting: parameter evolution & error curves (Part 4), GMM plot (Part 1)
+matplotlib==3.10.8
+ 
