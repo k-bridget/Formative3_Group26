@@ -108,3 +108,153 @@ def expectation_step(data, mu1, mu2, sigma1, sigma2, pi1, pi2):
 
     return r1, r2
 
+
+# M-step (updates the parameters of the Gaussian distributions based on responsibilities calculated in the E-step)
+
+
+def maximization_step(data, r1, r2):
+
+    mu1 = np.sum(r1 * data) / np.sum(r1)
+    mu2 = np.sum(r2 * data) / np.sum(r2)
+
+    sigma1 = np.sqrt(
+        np.sum(r1 * (data - mu1) ** 2) / np.sum(r1)
+    )
+
+    sigma2 = np.sqrt(
+        np.sum(r2 * (data - mu2) ** 2) / np.sum(r2)
+    )
+
+    pi1 = np.mean(r1)
+    pi2 = np.mean(r2)
+
+    return mu1, mu2, sigma1, sigma2, pi1, pi2
+
+#  log-likelihood 
+
+def log_likelihood(data, mu1, mu2, sigma1, sigma2, pi1, pi2):
+    
+    likelihood = (
+        pi1 * gaussian(data, mu1, sigma1)
+        +
+        pi2 * gaussian(data, mu2, sigma2)
+    )
+    
+    likelihood = np.clip(likelihood, 1e-12, None)
+
+    return np.sum(np.log(likelihood))
+
+# EM loop 
+
+max_iterations = 100
+tolerance = 1e-6
+
+previous_ll = -np.inf
+
+print(
+    f"{'Iter':<5}"
+    f"{'μ1':>10}"
+    f"{'μ2':>10}"
+    f"{'σ1²':>10}"
+    f"{'σ2²':>10}"
+    f"{'π1':>10}"
+    f"{'π2':>10}"
+    f"{'LogLik':>15}"
+)
+
+for iteration in range(max_iterations):
+
+    # E-Step
+    r1, r2 = expectation_step(
+        heights,
+        mu1,
+        mu2,
+        sigma1,
+        sigma2,
+        pi1,
+        pi2
+    )
+
+    # M-Step
+    mu1, mu2, sigma1, sigma2, pi1, pi2 = maximization_step(
+        heights,
+        r1,
+        r2
+    )
+
+    # Log Likelihood
+    ll = log_likelihood(
+        heights,
+        mu1,
+        mu2,
+        sigma1,
+        sigma2,
+        pi1,
+        pi2
+    )
+
+    # Check for convergence
+    if abs(ll - previous_ll) < tolerance:
+        print(f"Converged after {iteration} iterations.")
+        break
+
+    previous_ll = ll
+
+    print(
+        f"{iteration:<5}"
+        f"{mu1:>10.2f}"
+        f"{mu2:>10.2f}"
+        f"{sigma1**2:>10.2f}"
+        f"{sigma2**2:>10.2f}"
+        f"{pi1:>10.3f}"
+        f"{pi2:>10.3f}"
+        f"{ll:>15.2f}"
+    )
+
+# Random heights (For handling random height values during presentation)
+
+
+height = float(input("Enter a height: "))
+
+def classify_height(height, mu1, mu2, sigma1, sigma2, pi1, pi2):
+
+    p1 = pi1 * gaussian(height, mu1, sigma1)
+    p2 = pi2 * gaussian(height, mu2, sigma2)
+
+    total = p1 + p2
+
+    child_probability = p1 / total
+    father_probability = p2 / total
+
+    print(f"Height: {height:.2f}")
+    print(f"Probability Child : {child_probability:.4f}")
+    print(f"Probability Father: {father_probability:.4f}")
+
+    if child_probability > father_probability:
+        print("Prediction: Child")
+    else:
+        print("Prediction: Father")
+
+classify_height(
+    height,
+    mu1,
+    mu2,
+    sigma1,
+    sigma2,
+    pi1,
+    pi2
+)
+
+
+# Plot final Gaussian distributions after EM convergence
+
+
+x = np.linspace(min(heights), max(heights), 500)
+
+plt.hist(heights, bins=30, density=True, alpha=0.6)
+
+plt.plot(x, pi1 * gaussian(x, mu1, sigma1), label="Children")
+plt.plot(x, pi2 * gaussian(x, mu2, sigma2), label="Fathers")
+
+plt.legend()
+plt.show()
