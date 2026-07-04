@@ -4,8 +4,9 @@ import pandas as pd
 #==================
 # Load dataset
 #==================
-
-df = pd.read_csv("data/IMDB Dataset.csv")
+import os
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+df = pd.read_csv(os.path.join(BASE_DIR, 'data', 'IMDB Dataset.csv'))
 
 print(df.head())
 
@@ -50,7 +51,7 @@ keyword = "excellent"
 # Count positive with keyword (P(keyword | positive))
 #===============================
 
-:positive_keyword = df[
+positive_keyword = df[
     (df["sentiment"] == "positive")
     &
     (

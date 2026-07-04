@@ -44,7 +44,7 @@ predict(X,m,b)
 
 
 #======================
-# Cost function (MSE) | Calculate how wrong is the model
+# Cost function (MSE)
 #======================
 
 def mse(y_true, y_pred):
@@ -105,7 +105,7 @@ cost_history = []
 
 learning_rate = 0.01
 
-iterations = 20
+iterations = 4
 
 for i in range(iterations):
 
