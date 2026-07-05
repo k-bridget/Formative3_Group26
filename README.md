@@ -36,22 +36,19 @@ project/
 │   └── IMDB Dataset.csv
 │
 ├── notebooks/
-│   ├── Part1_EM.ipynb
-│   ├── Part2_Bayes.ipynb
-│   ├── Part3_Manual.pdf
-│   └── Part4_GradientDescent.ipynb
+│   ├── Merged notebook.ipynb
+│   └── Part 3 Merged PDF.pdf
 │
 ├── src/
-│   ├── em.py
 │   ├── bayes.py
-│   ├── gradient_descent.py
-│   └── utils.py
+│   ├── em.py
+│   └── gradient.py
 │
-├── images/
+├── _BSE Group Assignments_Task Sheet_Mathematics for Machine Learning_Formative3_Cohort 2_Team26.xlsx
+|
+├── README.md
 │
-├── requirements.txt
-│
-└── README.md
+└── requirements.txt
 ```
 
 ---
