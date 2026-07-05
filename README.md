@@ -212,7 +212,7 @@ python bayes.py
 Part 4
 
 ```bash
-python gradient_descent.py
+python gradient.py
 ```
 
 ---
