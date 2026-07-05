@@ -6,8 +6,8 @@
 
 | Armstrong Hirwa    Part 1 |
 | Nazira umucyo      Part 2 |
-| Bridget            Part 3 |
-| Kudakwashe Chikovo Part 4 
+| Bridget Karungi    Part 3 |
+| Kudakwashe Chikovo Part 4 |
 
 ---
 
