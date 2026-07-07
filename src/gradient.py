@@ -18,7 +18,7 @@ y = np.array([
 ], dtype=float)
 
 
-#========================
+#===========================8
 # Initialize parameters (weight & bias)
 #========================
 
